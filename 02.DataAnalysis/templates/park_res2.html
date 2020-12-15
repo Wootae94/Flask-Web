@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block subtitle %}
+<strong>서울시 공원 현황 - {{ gu_select[0] }}</strong>
+{% endblock %}
+{% block content %}
+            <table class="table table-condensed mx-5">
+                <tr class="d-flex">
+                    <td class="col-3"><strong>항목</strong></td>
+                    <td class="col-3"><strong>{{ gu_select[0] }}</strong></td>
+                    <td class="col-3"><strong>평균</strong></td>
+                    <td rowspan="3" class="col-3">
+                        <button class="btn btn-primary btn-sm ml-5"
+                                onclick="location.href='/park'">재실행</button>
+                    </td>
+                </tr>
+                <tr class="d-flex">
+                    <td class="col-3">공원면적</td>
+                    <td class="col-3"> {{'{:,}'.format((gu_select[3]*1000000).round(2)|int)}} m<sup>2</sup></td>
+                    <td class="col-3"> {{ park_mean[3]*1000000 }} m<sup>2</sup></td>
+                </tr>
+                <tr class="d-flex">
+                    <td class="col-3">공원수</td>
+                    <td class="col-3">{{ gu_select[1] }} 개</td>
+                    <td class="col-3"> {{ park_mean[0] }} 개</td>
+                </tr>
+                <tr class="d-flex">
+                    <td class="col-3">공원면적 비율</td>
+                    <td class="col-3">{{ (gu_select[5]*100).round(2) }} &#37;</td>
+                    <td class="col-3">{{ park_mean[4]*100 }} &#37;</td>
+                </tr>
+                <tr class="d-flex">
+                    <td class="col-3">인당 공원면적</td>
+                    <td class="col-3">{{ (gu_select[6]).round(2) }} m<sup>2</sup></td>
+                    <td class="col-3">{{ park_mean[5] }} m<sup>2</sup></td>
+                </tr>
+                <tr class="d-flex">
+                    <td colspan=2>
+                        <iframe class="map" , src="/map" width="800" height="500"></iframe>
+                    </td>
+                </tr>
+            </table>
+{% endblock %}

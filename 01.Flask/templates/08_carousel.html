@@ -1,0 +1,53 @@
+{% extends "08_base.html" %}
+{% block title %}20201210과제{% endblock %}
+{% block additinal_head %}
+<style>
+    /* Make the image fully responsive */
+    .carousel-inner img {
+        height: 100
+    }
+</style>
+{% endblock %}
+{% block subtitle %}
+<div class="container mt-3">
+    <h2>Bootstrap Carousel <i class="fas fa-home"></i> </h2>
+    <hr>
+</div>
+{% endblock %}
+{% block content %}
+<div class="container">  
+<div id="demo" class="carousel slide" data-ride="carousel">
+        <ul class="carousel-indicators">
+            <li data-target="#demo" data-slide-to="0" class="active"></li>
+            <li data-target="#demo" data-slide-to="1"></li>
+            <li data-target="#demo" data-slide-to="2"></li>
+        </ul>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{{url_for('static', filename = 'img/chicago.jpg')}}" alt="시카고" width="1100" height="500" >
+                <div class="carousel-caption">
+                    <h3 style="background-color: black;">chicago</h3>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{{url_for('static', filename = 'img/la.jpg')}}" alt="시카고" width="1100" height="500" >
+                <div class="carousel-caption">
+                    <h3 style="background-color: black;">Los Angeles</h3>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{{url_for('static', filename = 'img/ny.jpg')}}" alt="시카고" width="1100" height="500" >
+                <div class="carousel-caption">
+                    <h3 style="background-color: black;">New York</h3>     
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#demo" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#demo" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -11,6 +11,7 @@ covid19apikey.txt
 chromedriver.exe
 .DS_Store
 cafe/
+fontawesome/
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
 

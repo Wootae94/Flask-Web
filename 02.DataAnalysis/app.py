@@ -1,24 +1,27 @@
 from flask import Flask, render_template, session, request
 from fbprophet import Prophet
 from datetime import datetime, timedelta
-import os
+import os, json, folium, logging
+from logging.config import dictConfig
 import pandas as pd
 import pandas_datareader as pdr
 import matplotlib as mpl 
 import matplotlib.pyplot as plt 
 from matplotlib import rc
-import json
 
-# 한글폰트 사용
 rc('font', family='AppleGothic')
-
 plt.rcParams['axes.unicode_minus'] = False
-import folium
 
 from my_util.weather import get_weather
 app = Flask(__name__)
 app.secret_key = 'qwert12345'
 kospi_dict, kosdaq_dict = {}, {}
+
+with open('./logging.json','r') as file:
+    config = json.load(file)
+dictConfig(config)
+app.logger
+
 def get_weather_main():
     weather = None
     try:
@@ -71,6 +74,7 @@ def park():
         return render_template('park.html', menu=menu, weather=get_weather_main(), park_list=park_list, gu_list=gu_list)
     else:
         gubun = request.form['gubun']
+        app.logger.info(gubun)
         if gubun == 'name':
             park_name = request.form['park_name']
             df = seoul_park[seoul_park['공원명']==park_name].reset_index(drop=True)
@@ -121,7 +125,7 @@ def park_gu2(path):
     menu = {'ho':0, 'da':1, 'ml':0, 'sc':1, 'co':0, 'ca':0, 'cr':0, 'st':0, 'wc':0}
     gu_park = pd.read_csv('./static/data/gu_park.csv')
     gu_park.set_index('지역구',inplace=True)
-    geo_path = './static/json/skorea_municipalities_geo_simple.json'
+    geo_path = './static/data/skorea_municipalities_geo_simple.json'
     geo_str = json.load(open(geo_path, encoding='utf8'))
     if path == 'area':
         subtitle = '자치구별 공원총면적'

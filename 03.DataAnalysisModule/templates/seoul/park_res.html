@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block subtitle %}
+<strong>서울시 공원 현황 - {{ park_select[1] }}</strong>
+{% endblock %}
+{% block content %}
+            <table class="table table-condensed mx-5">
+                <tr class="d-flex">
+                    <td class ="col-1">
+                        공원명
+                    </td>
+                    <td class ="col-8">
+                        {{ park_select[1] }}
+                    </td>
+                    <td rowspan="3" class="col-3">
+                        <button class="btn btn-primary btn-sm ml-5"
+                                onclick="location.href='/seoul/park'">재실행</button>
+                    </td>
+                </tr>
+                <tr class="d-flex">
+                    <td class ="col-1">
+                        면적
+                    </td>
+                    <td class ="col-8">
+                        {{'{:,}'.format(park_select[2]|int)}} m<sup>2</sup>
+                    </td>
+                </tr>
+                <tr class="d-flex">
+                    <td class ="col-1">
+                        주소
+                    </td>
+                    <td class ="col-8">
+                        {{ park_select[3] }}
+                    </td>
+                </tr>
+                <tr class="d-flex">
+                    <td class ="col-1">
+                        개요
+                    </td>
+                    <td class ="col-8">
+                        {{ park_select[-1] }}
+                    </td>
+                </tr>
+                <tr class="d-flex">
+                    <td colspan=2>
+                        <iframe class="map" , src="/map" width="800" height="500"></iframe>
+                    </td>
+                </tr>
+            </table>
+{% endblock %}

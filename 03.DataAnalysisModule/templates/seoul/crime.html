@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block aditional_head %}
+<style>
+    td {
+        text-align: center;
+    }
+</style>
+{% endblock%}
+{% block subtitle %}
+<strong>
+    <h2>서울시 자치구별 5대범죄 비교</h2> {{subtitle}}
+</strong>
+{% endblock %}
+{% block content %}
+<div class="container mb-5">
+    <iframe class="map" , src="/map" width="800" height="600"></iframe>
+    <table class="table-borderless mb-5">
+        <tr>
+            <td><button class="btn btn-danger btn-sm ml-5" onclick="location.href='/seoul/crime/crime'">범죄</button></td>
+            <td><button class="btn btn-danger btn-sm ml-5" onclick="location.href='/seoul/crime/murder'">살인</button>
+            </td>
+            <td><button class="btn btn-danger btn-sm ml-5" onclick="location.href='/seoul/crime/rape'">강간</button></td>
+            <td><button class="btn btn-danger btn-sm ml-5" onclick="location.href='/seoul/crime/burglar'">강도</button>
+            </td>
+            <td><button class="btn btn-danger btn-sm ml-5" onclick="location.href='/seoul/crime/theft'">절도</button></td>
+            <td><button class="btn btn-danger btn-sm ml-5" onclick="location.href='/seoul/crime/violence'">폭력</button>
+            </td>
+        </tr>
+        <tr>
+            <td><button class="btn btn-primary btn-sm ml-5" onclick="location.href='/seoul/crime/a_crime'">검거율</button>
+            </td>
+            <td><button class="btn btn-primary btn-sm ml-5"
+                    onclick="location.href='/seoul/crime/a_murder'">살인검거율</button></td>
+            <td><button class="btn btn-primary btn-sm ml-5" onclick="location.href='/seoul/crime/a_rape'">강간검거율</button>
+            </td>
+            <td><button class="btn btn-primary btn-sm ml-5"
+                    onclick="location.href='/seoul/crime/a_burglar'">강도검거율</button></td>
+            <td><button class="btn btn-primary btn-sm ml-5"
+                    onclick="location.href='/seoul/crime/a_theft'">절도검거율</button></td>
+            <td><button class="btn btn-primary btn-sm ml-5"
+                    onclick="location.href='/seoul/crime/a_violence'">폭력검거율</button></td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

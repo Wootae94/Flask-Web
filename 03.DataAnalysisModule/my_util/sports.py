@@ -7,8 +7,17 @@ def crawling(sports_target):
     result_text = ''
     for sport in sports_target:
         driver.get(f'https://sports.news.naver.com/{sport}/news/index.nhn?isphoto')
-        page = len(driver.find_element_by_css_selector('.paginate').text.split())
-        for p in range(1,page+1):
+        while True:
+            page = driver.find_element_by_id('_pageList')
+            try:
+                next = page.find_element_by_class_name('next')
+                if next:
+                    next.click()
+            except:
+                break
+        last_paginate = driver.find_element_by_css_selector('.paginate')
+        last_page = last_paginate.find_elements_by_tag_name('a')[-1].text
+        for p in range(1,int(last_page)+1):
             driver.get(f'https://sports.news.naver.com/{sport}/news/index.nhn?isphoto=N&page={p}')
             time.sleep(2)
             news = driver.find_element_by_css_selector('.news_list')

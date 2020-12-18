@@ -3,19 +3,18 @@ from fbprophet import Prophet
 from datetime import datetime, timedelta
 import os, json, folium, logging
 from logging.config import dictConfig
-from bp.simple import simple_bp
-from bp5_stock.stock import stock_bp
 from bp1_seoul.seoul import seoul_bp
 from bp3_carto.carto import carto_bp
+from bp5_stock.stock import stock_bp
+from bp6_wordcloud.wordcloud import word_bp
 from my_util.weather import get_weather
 app = Flask(__name__)
 app.secret_key = 'qwert12345'
 app.config['SESSION_COOKIE_PATH'] = '/'
-app.register_blueprint(simple_bp, url_prefix = '/simple')
-app.register_blueprint(stock_bp, url_prefix = '/stock')
 app.register_blueprint(seoul_bp, url_prefix = '/seoul')
 app.register_blueprint(carto_bp, url_prefix = '/carto')
-
+app.register_blueprint(stock_bp, url_prefix = '/stock')
+app.register_blueprint(word_bp, url_prefix = '/wordcloud')
 with open('./logging.json','r') as file:
     config = json.load(file)
 dictConfig(config)

@@ -1,22 +1,28 @@
 {% extends "base.html" %}
 {% block weather %} {{ weather|safe() }} {% endblock %}
 {% block subtitle %}
-    <strong>버거 지수</strong>
+    <strong>스포츠 뉴스</strong>
 {% endblock %}
 {% block content %}
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8">
-            <form action="/carto/burger" method="POST" enctype="multipart/form-data">
+            <form action="/wordcloud/sports" method="POST" enctype="multipart/form-data">
                 <table class="table table-borderless">
                     <tr>
                         <td><label for="item">항목</label></td>
                         <td>
                             <select class="custom-select" id="item" name="item">
-                                {% for item in ['버거지수','롯데리아 매장수','맘스터치 매장수','버거킹 매장수','맥도날드 매장수', 'KFC 매장수'] %}
+                                {% for item in ['스포츠 전체','야구','해외야구','축구','해외축구', '농구','배구','골프','일반','e스포츠'] %}
                                     <option value="{{item}}">{{item}}</option>
                                 {% endfor %}
                             </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="stop_words">금지어<br>(Stopwords)</label></td>
+                        <td>
+                            <textarea name="stop_words" id="stop_words" cols="50" rows="5"></textarea>
                         </td>
                     </tr>
                     <tr>

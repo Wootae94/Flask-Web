@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block weather %} {{ weather|safe() }} {% endblock %}
 {% block subtitle %}
-    <strong>커피 지수</strong>
+    <strong>대한민국 인구 지도</strong>
 {% endblock %}
 {% block content %}
     <div class="row">
@@ -17,15 +17,6 @@
                                     <option value="{{item}}">{{item}}</option>
                                 {% endfor %}
                             </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>CSV 파일</td>
-                        <td>
-                            <div class="custom-file mb-3">
-                                <input type="file" class="custom-file-input" id="csv" name="csv">
-                                <label class="custom-file-label" for="csv">업로드할 파일 선택</label>
-                            </div>
                         </td>
                     </tr>
                     <tr>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block weather %} {{ weather|safe() }} {% endblock %}
 {% block subtitle %}
-<strong>코로나 현황</strong>
+<strong>코로나 현황</strong> - <small>{{ subject }} 최근 10일 그래프</small>
 {% endblock %}
 {% block additional_head %}
 
@@ -41,8 +41,8 @@
 
 {% endblock %}
 {% block additional_body %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
+<script src="{{url_for('static', filename = 'Chart//dist/Chart.min.js')}}""></script>
 <script type=text/javascript>
     var date_list = {{ data_dict["date"] | tojson | safe }}
     var defCnt_list = {{ data_dict["defCnt"] | tojson | safe }}
@@ -57,13 +57,13 @@
                     "data":defCnt_list,
                     "fill":false,
                     "borderColor":"rgb(75, 192, 192)",
-                    "lineTension":0},
+                    "lineTension":0.2},
                 {
                     "label":"격리해제자수",
                     "data":isolClearCnt_list,
                     "fill":false,
                     "borderColor":"rgb(192, 75, 192)",
-                    "lineTension":0}]},
+                    "lineTension":0.2}]},
         "options":{}});
 </script>
 

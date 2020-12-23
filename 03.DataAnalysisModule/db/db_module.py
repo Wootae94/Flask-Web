@@ -42,12 +42,22 @@ def write_covid_agender(params):
     cur.close()
     conn.close()
 
-def get_covid_region(region):
+def get_region_offset(region):
     conn = sqlite3.connect('./db/covid.db')
     cur = conn.cursor()
     gubun = (region,)
-    sql_select = 'select * from daily where gubun= ? order by stdDay DESC limit 10'
+    sql_select = 'select count(*) from daily where gubun=?'
     cur.execute(sql_select, gubun)
+    row = cur.fetchone()
+    offset = row[0]
+    return offset
+
+def get_covid_region(region,offset):
+    conn = sqlite3.connect('./db/covid.db')
+    cur = conn.cursor()
+    params = (region,offset)
+    sql_select = 'select * from daily where gubun= ? order by stdDay limit 10 offset ?'
+    cur.execute(sql_select, params)
     rows = cur.fetchall()
     cur.close()
     conn.close()

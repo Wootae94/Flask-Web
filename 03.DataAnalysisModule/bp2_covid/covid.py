@@ -6,7 +6,7 @@ from datetime import timedelta, datetime
 import os, folium, json
 import pandas as pd
 from my_util.weather import get_weather
-from db.db_module import get_covid_daily,get_agender_daily,get_region_list,get_covid_region
+from db.db_module import get_covid_daily,get_agender_daily,get_region_list,get_covid_region,get_region_offset
 from my_util.covid_util import new_covid_daily,new_covid_agender
 
 covid_bp = Blueprint('covid_bp', __name__)
@@ -39,10 +39,11 @@ def covid_agender():
     rows = get_agender_daily(date)
     return render_template('covid/agender.html', menu=menu, weather=get_weather_main(),date=date, rows=rows)  
 
-@covid_bp.route('/agender/chart/radar/<path:path>',methods = ['GET'])
-def age_radar(path):
+@covid_bp.route('/agender/chart/radar',methods = ['GET'])
+def age_radar():
     menu = {'ho':0, 'da':1, 'ml':0, 'sc':0, 'co':1, 'ca':0, 'cr':0, 'st':0, 'wc':0}
-    date = path
+    today = datetime.now().strftime('%Y-%m-%d')
+    date = request.args.get("date",today)
     current_app.logger.info(f'{date}  data ')
     rows = get_agender_daily(date)
     data1_list,data2_list,data3_list = [],[],[]
@@ -51,22 +52,23 @@ def age_radar(path):
         data2_list.append(row[4])
         data3_list.append(row[5])
     data_dict = {"data1":data1_list,"data2":data2_list,"data3":data3_list}
-    return render_template('covid/agender_radar.html', menu=menu, weather=get_weather_main(),date=path,data_dict=data_dict)  
+    return render_template('covid/agender_radar.html', menu=menu, weather=get_weather_main(),date=date,data_dict=data_dict)  
 
 @covid_bp.route('/daily/chart/line',methods = ['GET'])
 def daily_line():
     menu = {'ho':0, 'da':1, 'ml':0, 'sc':0, 'co':1, 'ca':0, 'cr':0, 'st':0, 'wc':0}
     region_list = get_region_list()
     region = request.args.get("region","합계")
+    offset = get_region_offset(region) - 10
     current_app.logger.info(f'{region}  data ')
-    rows = get_covid_region(region)
+    rows = get_covid_region(region,offset)
     date_list,defCnt_list,isolClearCnt_list = [],[],[]
     for row in rows:
         date_list.append(row[0])
         defCnt_list.append(row[2])
         isolClearCnt_list.append(row[5])
     data_dict = {"date":date_list,"defCnt":defCnt_list,"isolClearCnt":isolClearCnt_list}
-    return render_template('covid/daily_line.html', menu=menu, weather=get_weather_main(),region_list=region_list,data_dict=data_dict)  
+    return render_template('covid/daily_line.html', menu=menu, weather=get_weather_main(),region_list=region_list,data_dict=data_dict,subject=region)  
 
 @covid_bp.route('/update_daily/<path:path>',methods = ['GET'])
 def update_covid_daily(path):

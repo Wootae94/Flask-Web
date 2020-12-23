@@ -25,7 +25,7 @@
 
 {% endblock %}
 {% block additional_body %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="{{url_for('static', filename = 'Chart//dist/Chart.min.js')}}""></script>
 
 <script type=text/javascript>
     var data1 = {{ data_dict["data1"] | tojson | safe }}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block subtitle %}
+<strong>코로나 현황</strong>-<small>{{date}}</small>
+{% endblock %}
+{% block additional_head %}
+
+{% endblock%}
+
+{% block content %}
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-9"></div>
+                <div class="col-3">
+                    <button class="btn btn-primary"
+                                onclick="location.href='/covid/agender?date={{date}}'">돌아가기</button>
+                </div>
+        <div class="col-11">
+            <canvas id="myRadarChart" width="642" height="321" style="display: block; width: 642px; height: 321px;"></canvas>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block additional_body %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+<script type=text/javascript>
+    var data1 = {{ data_dict["data1"] | tojson | safe }}
+    var data2 = {{ data_dict["data2"] | tojson | safe }}
+    var data3 = {{ data_dict["data3"] | tojson | safe }}
+    var ctx = document.getElementById("myRadarChart").getContext('2d');
+    var myRadarChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ['0-9세', '10-19세', '20-29세', '30-39세', '40-49세', '50-59세', '60-69세', '70-79세', '80세 이상'],
+            datasets: [
+            {
+                "label":"확진자비율",
+                "data":data1,
+                "fill":true,"backgroundColor":"rgba(255, 99, 132, 0.2)",
+                "borderColor":"rgb(255, 99, 132)",
+                "pointBackgroundColor":"rgb(255, 99, 132)",
+                "pointBorderColor":"#fff",
+                "pointHoverBackgroundColor":"#fff",
+                "pointHoverBorderColor":"rgb(255, 99, 132)"},
+            {
+                "label":"사망자비율",
+                "data":data2,
+                "fill":true,
+                "backgroundColor":"rgba(54, 162, 235, 0.2)",
+                "borderColor":"rgb(54, 162, 235)",
+                "pointBackgroundColor":"rgb(54, 162, 235)",
+                "pointBorderColor":"#fff",
+                "pointHoverBackgroundColor":"#fff",
+                "pointHoverBorderColor":"rgb(54, 162, 235)"
+            },
+            {
+                "label":"치명율",
+                "data":data3,
+                "fill":true,
+                "backgroundColor":"rgba(51, 255, 51, 0.2)",
+                "borderColor":"rgb(51, 255, 51)",
+                "pointBackgroundColor":"rgb(51, 255, 51)",
+                "pointBorderColor":"#fff",
+                "pointHoverBackgroundColor":"#fff",
+                "pointHoverBorderColor":"rgb(51, 255, 51)"
+            }]
+        },
+        options: {
+            scale: {
+                angleLines: {
+                    display: false
+                },
+                ticks: {
+                    suggestedMin: 0,
+                    suggestedMax: 50
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

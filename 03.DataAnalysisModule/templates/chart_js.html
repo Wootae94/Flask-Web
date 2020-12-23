@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>This is H1</h1>
+<div style='width:800px;'>
+    <canvas id="myChart" width="10" height="4"></canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var scatterChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Scatter Dataset',
+                data: [{ x: -10, y: 0},{ x:  10, y: 0 },{ x: 10, y: 5 },],
+                backgroundColor: 'rgb(255, 99, 132)',
+                fill: false, // line의 아래쪽을 색칠할 것인가? 
+                borderColor: 'rgb(255, 99, 132)'
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }], 
+                yAxes: [{
+                    ticks: {
+                        suggestedMin: -0.2,
+                        suggestedMax: 1.2
+                    }
+                }]
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 import requests
 from urllib.parse import urlparse
 def get_weather():
-    key_fd = open('../static/data/openweatherkey.txt', mode='r')
+    key_fd = open('./static/data/openweatherkey.txt', mode='r')
     api_key = key_fd.read(100)
     key_fd.close()
     

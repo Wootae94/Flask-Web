@@ -4,7 +4,9 @@ from fbprophet import Prophet
 from datetime import datetime, timedelta
 import os
 import pandas as pd
-import pandas_datareader as pdr
+
+import FinanceDataReader as fdr
+
 import matplotlib as mpl 
 from my_util.weather import get_weather
 
@@ -44,18 +46,19 @@ def stock():
         if market == 'KS':
             code = request.form['kospi_code']
             company = kospi_dict[code]
-            code += '.KS'
+            
         else:
             code = request.form['kosdaq_code']
             company = kosdaq_dict[code]
-            code += '.KQ'
+            
         learn_period = int(request.form['learn'])
         pred_period = int(request.form['pred'])
         today = datetime.now()
         start_learn = today - timedelta(days=learn_period*365)
         end_learn = today - timedelta(days=1)
+        current_app.logger.debug(f"get stock data: {code}")
         try:
-            stock_data = pdr.DataReader(code, data_source='yahoo', start=start_learn,   end=end_learn)
+            stock_data = fdr.DataReader(code,  start=start_learn,   end=end_learn)
             current_app.logger.debug(f"get stock data: {code}")
             df = pd.DataFrame({'ds': stock_data.index, 'y': stock_data.Close})
             df.reset_index(inplace=True)
@@ -77,4 +80,4 @@ def stock():
         mtime = int(os.stat(img_file).st_mtime)
 
         return render_template('stock/stock_res.html', menu=menu, weather=get_weather_main(), 
-                                mtime=mtime, company=company, code=code)
+                                mtime=mtime, company=company, code=code,market=market)

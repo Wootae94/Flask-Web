@@ -66,7 +66,7 @@ def park():
         else:
             seoul_gu = request.form['seoul_gu']
             df = seoul_park[seoul_park['지역구']==seoul_gu].reset_index(drop=True)
-            df2 = gu_park[gu_park['지역구']==seoul_gu].reset_index(drop=True)
+            df2 = gu_park[gu_park.index==seoul_gu].reset_index()
             gu_select = df2.loc[0,:].tolist()
             park_mean = gu_park.mean().round(2).tolist()
             map = folium.Map(location=[df.lat.mean(),df.lng.mean()], zoom_start=11)

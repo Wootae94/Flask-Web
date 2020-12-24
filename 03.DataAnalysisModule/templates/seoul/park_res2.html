@@ -16,8 +16,9 @@
                 </tr>
                 <tr class="d-flex">
                     <td class="col-3">공원면적</td>
-                    <td class="col-3"> {{'{:,}'.format((gu_select[3]*1000000).round(2)|int)}} m<sup>2</sup></td>
-                    <td class="col-3"> {{ park_mean[3]*1000000 }} m<sup>2</sup></td>
+                    {% set gu_park_area = '%0.2f' %(gu_select[3]*1000000)|float %}   
+                    <td class="col-3"> {{'{:,}'.format(gu_park_area|float)}} m<sup>2</sup></td>
+                    <td class="col-3"> {{ (park_mean[3]*1000000) }} m<sup>2</sup></td>
                 </tr>
                 <tr class="d-flex">
                     <td class="col-3">공원수</td>
@@ -26,12 +27,14 @@
                 </tr>
                 <tr class="d-flex">
                     <td class="col-3">공원면적 비율</td>
-                    <td class="col-3">{{ (gu_select[5]*100).round(2) }} &#37;</td>
+                    {% set gu_park_per_area = '%0.2f' %((gu_select[5]*100))|float %}
+                    <td class="col-3">{{ gu_park_per_area }} &#37;</td>
                     <td class="col-3">{{ park_mean[4]*100 }} &#37;</td>
                 </tr>
                 <tr class="d-flex">
                     <td class="col-3">인당 공원면적</td>
-                    <td class="col-3">{{ (gu_select[6]).round(2) }} m<sup>2</sup></td>
+                    {% set gu_park_per_person = '%0.2f' %(gu_select[6])|float %}
+                    <td class="col-3">{{ gu_park_per_person }} m<sup>2</sup></td>
                     <td class="col-3">{{ park_mean[5] }} m<sup>2</sup></td>
                 </tr>
                 <tr class="d-flex">

@@ -5,6 +5,7 @@ import datetime
 from datetime import timedelta, datetime
 import os, folium, json
 import pandas as pd
+import matplotlib as mpl 
 from my_util.weather import get_weather
 from db.db_module import get_covid_daily,get_agender_daily,get_region_list,get_covid_region,get_region_offset
 from my_util.covid_util import new_covid_daily,new_covid_agender
@@ -75,6 +76,7 @@ def update_covid_daily(path):
     date = ''.join(path.split('-'))
     current_app.logger.info(f'{date}  data ')
     try:
+        current_app.logger.info(f'data success')
         new_covid_daily(date)
     except:
         current_app.logger.error('Data error')
@@ -94,3 +96,5 @@ def update_covid_agender(path):
         return redirect(url_for('covid_bp.covid_agender')+f'?date={path}')
     
     return redirect(url_for('covid_bp.covid_agender')+f'?date={path}') 
+
+#@covid_bp.route('/seoul')

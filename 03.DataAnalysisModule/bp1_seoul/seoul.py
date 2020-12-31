@@ -6,7 +6,10 @@ import json
 from datetime import datetime, timedelta
 from my_util.weather import get_weather
 from flask import current_app
-
+import numpy as np
+import matplotlib as mpl 
+import matplotlib.pyplot as plt
+import os
 seoul_bp = Blueprint('seoul_bp', __name__)
 
 seoul_park = pd.read_csv('./static/data/Seoul_Park.csv')
@@ -17,7 +20,7 @@ gu_park = pd.read_csv('./static/data/gu_park.csv',index_col='지역구')
 
 seoul_crime = pd.read_csv('./static/data/Seoul_crime.csv',index_col='구별')
 seoul_police = pd.read_csv('./static/data/Seoul_police.csv')
-
+seoul_cctv = pd.read_csv('./static/data/CCTV_result.csv',index_col='구별')
 geo_path = './static/data/skorea_municipalities_geo_simple.json'
 geo_str = json.load(open(geo_path, encoding='utf8'))
 
@@ -153,3 +156,46 @@ def crime2(path):
         map.save('templates/map.html')
      
     return render_template('seoul/crime.html', menu=menu, weather=get_weather_main(),subtitle=subtitle)  
+
+@seoul_bp.route('/cctv',methods = ['GET'])
+def cctv():
+    menu = {'ho':0, 'da':1, 'ml':0, 'sc':1, 'co':0, 'ca':0, 'cr':0, 'st':0, 'wc':0}
+    
+    map = folium.Map(location=[37.5502, 126.982], zoom_start=11,
+                tiles='Stamen Toner')
+    subject = request.args.get('subject','소계')
+    map.choropleth(geo_data = geo_str,
+            data = seoul_cctv[subject],
+            columns = [seoul_cctv.index, seoul_cctv[subject]],
+            fill_color = 'YlGnBu',
+            key_on = 'feature.id')
+    map.save('templates/map.html')
+    return render_template('seoul/cctv.html', menu=menu, weather=get_weather_main(),subtitle=subject)
+    
+@seoul_bp.route('/cctv/grape',methods = ['GET'])
+def cctv_grape():
+    menu = {'ho':0, 'da':1, 'ml':0, 'sc':1, 'co':0, 'ca':0, 'cr':0, 'st':0, 'wc':0}
+    fp1 = np.polyfit(seoul_cctv['인구수'], seoul_cctv['소계'], 1)
+
+    f1 = np.poly1d(fp1)
+    fx = np.linspace(100000, 700000, 100)
+
+    seoul_cctv['오차'] = np.abs(seoul_cctv['소계'] - f1(seoul_cctv['인구수']))
+
+    df_sort = seoul_cctv.sort_values(by='오차', ascending=False)
+    plt.figure(figsize=(8,6))
+    plt.scatter(seoul_cctv['인구수'], seoul_cctv['소계'],c=seoul_cctv['오차'], s=50)
+    plt.plot(fx, f1(fx), ls='dashed', lw=3, color='g')
+
+    for n in range(10):
+        plt.text(df_sort['인구수'][n]*1.02, df_sort['소계'][n]*0.98, df_sort.index[n] , fontsize=10)
+
+    plt.xlabel('인구수')
+    plt.ylabel('인구당 CCTV비율')
+
+    plt.colorbar()
+    plt.grid()
+    img_file = os.path.join(current_app.root_path, 'static/img/cctv_grape.png')
+    plt.savefig(img_file)
+    mtime = int(os.stat(img_file).st_mtime)    
+    return render_template('seoul/cctv_grape.html', menu=menu, weather=get_weather_main(),mtime=mtime)

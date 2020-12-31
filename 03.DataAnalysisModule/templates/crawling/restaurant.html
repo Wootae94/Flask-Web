@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block subtitle %}
+<strong>식신 지역별 맛집 Top 30</strong>
+{% endblock %}
+{% block content %}
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <table class="table table-borderless">
+                <tr>
+                    <form class="form-inline" action="/crawling/restaurant" method="POST">
+                        <td>
+                            <select class="custom-select my-2 mx-2" id="region" name="region">
+                                <option value="" disabled selected>지역을 선택하십시오.</option>
+                                {% for region in region_list %}
+                                <option value="{{region}}">{{region}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-primary my-2 ml-5">검색</button>
+                        </td>
+                    </form>
+
+                </tr>
+            </table>
+        </div>
+        <div class="col-1"></div>
+
+    </div>
+</div>
+{% endblock %}
+{% block additional_body %}
+
+{% endblock %}

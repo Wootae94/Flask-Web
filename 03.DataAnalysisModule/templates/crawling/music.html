@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block additional_head %}
+<style>
+    td img{
+        width: 100%;
+    }
+</style>
+{% endblock%}
+{% block subtitle %}
+<strong>Melon Top 100</strong>
+{% endblock %}
+{% block content %}
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-condensed">
+                <tr>
+                    <td>순위</td><td></td><td>곡명</td><td></td><td>가수명</td><td>앨범명</td>
+                </tr>
+                {% for params in params_list %}
+                <tr>
+                    <td>
+                        {{params[0]}}
+                    </td>
+                    <td>
+                        {% if params[3] > 0 %}
+                        <span class="badge badge-danger">{{params[3]}}</span>
+                        {% elif params[3] == 0 %}
+                        <span class="badge badge-light">-</span>
+                        {% elif params[3] == -100 %}
+                        <span class="badge badge-warning">New</span>
+                        {% else %}
+                        <span class="badge badge-primary">{{params[3]}}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{params[2]}}">{{params[4]}}</a> 
+                    </td>
+                    <td>
+                        {{params[5]}}
+                    </td>
+                    <td>
+                        <img src="{{params[1]}}" alt="앨범커버">
+                    </td>
+                    <td>
+                        {{params[6]}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block additional_body %}
+
+{% endblock %}

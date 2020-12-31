@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block subtitle %}
+<strong>코로나 현황</strong>-<small>{{date}}</small>
+{% endblock %}
+{% block additional_head %}
+
+{% endblock%}
+
+{% block content %}
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-10">
+            <canvas id="myDoughnutChart" width="642" height="321" style="display: block; width: 642px; height: 321px;"></canvas>
+        </div>
+        <div class="col-2"><button class="btn btn-primary"
+            onclick="history.back()">돌아가기</button></div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block additional_body %}
+<script src="{{url_for('static', filename = 'Chart/dist/Chart.min.js')}}"></script>
+
+<script type=text/javascript>
+    var region_list = {{ data_dict["region"] | tojson | safe }}
+    var data_list = {{ data_dict["data"] | tojson | safe }}
+    
+    var ctx = document.getElementById("myDoughnutChart").getContext('2d');
+    var myDoughnutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: region_list,
+            datasets: [{
+                label:"지역별 확진자 비율",
+                data:data_list,
+                backgroundColor:["rgb(255, 20, 60)","rgb(255, 165, 0)","rgb(245, 222, 179)","rgb(0, 255, 0)","rgb(034, 139, 034)","rgb(000, 255, 127)","rgb(250, 128, 114)","rgb(255, 205, 86)","rgb(255, 99, 132)","rgb(255, 192, 203)","rgb(255, 255, 240)","rgb(192, 192, 192)","rgb(128, 128, 128)","rgb(65, 105, 0)","rgb(147, 112, 219)","rgb(255, 20, 147)","rgb(54, 162, 235)"]}]
+                
+            },
+        options: {
+            
+        }
+    });
+</script>
+
+{% endblock %}

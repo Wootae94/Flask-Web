@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block additional_head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/jquery-ui.min.css')}}">
+<style>
+    /* Make the image fully responsive */
+    td img {
+        width: 100%;
+    }
+    td {
+        text-align: center;
+     }
+</style>
+{% endblock %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block subtitle %}
+코로나-19 서울 추세
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class='table table-borderless'>
+                <tr>
+                    <td colspan="2">
+                        <img src="{{url_for('static', filename='img/seoul_trend.png', q=mtime)}}" alt="서울 확진자수 추세 이미지">
+                    </td>
+                </tr>
+                    
+                <form action="/covid/seoul_trend" method="POST">
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label class="control-label mr-2" for="from">시작날짜:</label>
+                                <input type="text" name="dateCustomer" id="from">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label class="control-label mr-2" for="to">끝날짜:</label>
+                                <input type="text" name="dateCustomer" id="to">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% for col in col_list %}
+                            <div class="form-check-inline">
+                                <label class="form-check-label" for="check">
+                                    <input type="checkbox" class="form-check-input" id="check" name="gu" value={{col}}>{{ col }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" >
+                            <button type="submit" class="btn btn-primary">선택</button>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block additional_body %}
+<script src="{{url_for('static', filename='js/jquery-ui.min.js')}}"></script>
+<script>
+    $.datepicker.setDefaults({
+        dateFormat: 'yy-mm-dd',
+        prevText: '이전 달',
+        nextText: '다음 달',
+        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+        showMonthAfterYear: true,
+        yearSuffix: '년'
+    });
+    $(function () {
+        $("#from").datepicker();
+        $("#to").datepicker();
+    });
+</script>
+<script>
+    $('#submit').on('click', function(e) {
+        e.preventDefault();
+
+        startdate = $('#from').val(); 
+        enddate = $('#to').val();
+        endpoint = '/covid/seoul_trend?date=' + startdate +' '+ enddate;
+
+        window.location.href = endpoint
+
+        return false;
+    });
+</script>
+{% endblock %}

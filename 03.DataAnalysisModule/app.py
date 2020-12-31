@@ -6,6 +6,7 @@ from logging.config import dictConfig
 from bp1_seoul.seoul import seoul_bp
 from bp2_covid.covid import covid_bp
 from bp3_carto.carto import carto_bp
+from bp4_crawling.crawling import crawling_bp
 from bp5_stock.stock import stock_bp
 from bp6_wordcloud.wordcloud import word_bp
 
@@ -16,6 +17,7 @@ app.config['SESSION_COOKIE_PATH'] = '/'
 app.register_blueprint(seoul_bp, url_prefix = '/seoul')
 app.register_blueprint(covid_bp, url_prefix = '/covid')
 app.register_blueprint(carto_bp, url_prefix = '/carto')
+app.register_blueprint(crawling_bp, url_prefix = '/crawling')
 app.register_blueprint(stock_bp, url_prefix = '/stock')
 app.register_blueprint(word_bp, url_prefix = '/wordcloud')
 

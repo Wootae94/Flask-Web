@@ -22,6 +22,27 @@ def get_agender_daily(date):
     conn.close()
     return rows
 
+def get_region_daily(date):
+    conn = sqlite3.connect('./db/covid.db')
+    cur = conn.cursor()
+    ilja = (date,)
+    sql_select = 'select * from region where ilja= ?;'
+    cur.execute(sql_select, ilja)
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    return rows
+
+def get_region_pred(start,end):
+    conn = sqlite3.connect('./db/covid.db')
+    cur = conn.cursor()
+    sql_select = 'select * from region where ilja>=? and ilja<=?;'
+    cur.execute(sql_select,(start,end))
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    return rows
+
 def write_covid_daily(params):
     conn = sqlite3.connect('./db/covid.db')
     cur = conn.cursor()
@@ -41,6 +62,16 @@ def write_covid_agender(params):
     conn.commit()
     cur.close()
     conn.close()
+
+def write_covid_region(params):
+    conn = sqlite3.connect('./db/covid.db')
+    cur = conn.cursor()
+    sql_insert = 'insert into region values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+    cur.execute(sql_insert, params)
+    conn.commit()
+    cur.close()
+    conn.close()
+
 
 def get_region_offset(region):
     conn = sqlite3.connect('./db/covid.db')
@@ -75,3 +106,4 @@ def get_region_list():
         region_list.append(row[0])
     
     return region_list
+

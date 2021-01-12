@@ -8,11 +8,13 @@ roadapikey.txt
 kakaomapkey.txt
 openweatherkey.txt
 covid19apikey.txt
+covid19genderkey.txt
 chromedriver.exe
 .DS_Store
 cafe/
 fontawesome/
 upload/
+Chart/
 app.log
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/

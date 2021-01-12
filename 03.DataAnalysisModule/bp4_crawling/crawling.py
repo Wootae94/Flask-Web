@@ -46,8 +46,8 @@ def restaurant():
 @crawling_bp.route('/music',methods=['GET'])
 def music():
     menu = {'ho':0, 'da':1, 'ml':0, 'sc':0, 'co':0, 'ca':0, 'cr':1, 'st':0, 'wc':0}
-    
     params_list = get_melon_top_100()
+    
     return render_template('crawling/music.html', menu=menu, weather=get_weather(),params_list=params_list)
 
 @crawling_bp.route('/book',methods=['GET'])

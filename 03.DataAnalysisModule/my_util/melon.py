@@ -45,6 +45,7 @@ def get_melon_top_100():
         singers.append(singer)
         albums.append(album)
     Melon_top_100 = pd.DataFrame({
+                     'index':range(100),
                      'rank' : ranks,
                      'image':images,
                      'href':hrefs,
@@ -56,7 +57,7 @@ def get_melon_top_100():
     params_list = []
     for i in Melon_top_100.index:    
         params=[]
-        params = [Melon_top_100['rank'][i],Melon_top_100['image'][i],Melon_top_100['href'][i],Melon_top_100['diff'][i],Melon_top_100['title'][i],Melon_top_100['singer'][i],   Melon_top_100['album'][i]]
+        params = [Melon_top_100['index'][i],Melon_top_100['rank'][i],Melon_top_100['image'][i],Melon_top_100['href'][i],Melon_top_100['diff'][i],Melon_top_100['title'][i],Melon_top_100['singer'][i],   Melon_top_100['album'][i]]
         params_list.append(params)
 
     return params_list

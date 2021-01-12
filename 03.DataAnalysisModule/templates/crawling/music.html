@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% block weather %} {{ weather|safe() }} {% endblock %}
 {% block additional_head %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <style>
-    td img{
-        width: 100%;
+    
+    th,td {
+        text-align: center;
     }
 </style>
 {% endblock%}
@@ -14,45 +17,85 @@
 <div class="container mb-5">
     <div class="row">
         <div class="col-12">
-            <table class="table table-condensed">
-                <tr>
-                    <td>순위</td><td></td><td>곡명</td><td></td><td>가수명</td><td>앨범명</td>
-                </tr>
-                {% for params in params_list %}
-                <tr>
-                    <td>
-                        {{params[0]}}
-                    </td>
-                    <td>
-                        {% if params[3] > 0 %}
-                        <span class="badge badge-danger">{{params[3]}}</span>
-                        {% elif params[3] == 0 %}
-                        <span class="badge badge-light">-</span>
-                        {% elif params[3] == -100 %}
-                        <span class="badge badge-warning">New</span>
-                        {% else %}
-                        <span class="badge badge-primary">{{params[3]}}</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{{params[2]}}">{{params[4]}}</a> 
-                    </td>
-                    <td>
-                        {{params[5]}}
-                    </td>
-                    <td>
-                        <img src="{{params[1]}}" alt="앨범커버">
-                    </td>
-                    <td>
-                        {{params[6]}}
-                    </td>
-                </tr>
-                {% endfor %}
+            <table id="datatable_music" class="display compact" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>index</th><th colspan="2">순위</th><th>곡명</th><th>가수명</th><th></th><th>앨범명</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for params in params_list %}
+                    <tr>
+                        <td>
+                            {{params[0]}}
+                        </td>
+                        <td>
+                            {{params[1]}}
+                        </td>
+                        <td>
+                            {% if params[4] > 0 %}
+                            <span class="badge badge-danger">{{params[4]}}</span>
+                            {% elif params[4] == 0 %}
+                            <span class="badge badge-light">-</span>
+                            {% elif params[4] == -100 %}
+                            <span class="badge badge-warning">New</span>
+                            {% else %}
+                            <span class="badge badge-primary">{{params[4]}}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{params[3]}}">{{params[5]}}</a> 
+                        </td>
+                        <td>
+                            {{params[6]}}
+                        </td>
+                        <td>
+                            <img src="{{params[2]}}" alt="앨범커버"  width="48" height="48">
+                        </td>
+                        <td>
+                            {{params[7]}}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
 </div>
 {% endblock %}
 {% block additional_body %}
-
+<script>
+    $(document).ready(function() {
+        $('#datatable_music').DataTable({
+            info: false,
+                searching: true,
+                paging: true,
+                ordering: false,
+                //order: [[ 0, "asc" ]],
+                columnDefs: [{
+                    "targets": [ 0 ],
+                    "visible": false,
+                    "searchable": false
+                }],
+            language: {
+              thousands: ',',
+              search: '',
+              searchPlaceholder: "검색어를 입력해 주세요.",
+              paginate: {
+                first: '처음',
+                previous: '이전',
+                next: '다음',
+                last: '마지막',
+              }
+            },
+            oLanguage: {
+              sLengthMenu: "_MENU_",
+            },
+            info: false,
+            order: [[ 1, 'desc' ]],
+            aLengthMenu: [[10, 20, 50, 100], ['10개씩 보기', '20개씩 보기', '50개씩 보기', '100개씩 보기']],
+            pageLength: 10
+          });
+    } );
+</script>
 {% endblock %}

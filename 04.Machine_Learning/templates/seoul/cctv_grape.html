@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block aditional_head %}
+<style>
+    td {
+        text-align: center;
+    }
+</style>
+{% endblock%}
+{% block subtitle %}
+<strong>
+    <h2>서울시 자치구별 CCTV 그래프</h2>
+</strong>
+{% endblock %}
+{% block content %}
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <table class="table-borderless mb-5">
+                <tr>
+                    <td>
+                        <img src="{{url_for('static', filename='img/cctv_grape.png', q=mtime)}}"
+                        alt="서울 CCTV 그래프 이미지">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="float: right;">
+                        <button class="btn btn-success btn-sm ml-2" 
+                                onclick="location.href='/seoul/cctv'">돌아가기</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+{% endblock %}

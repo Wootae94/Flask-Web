@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block subtitle %}
+<strong>코로나 현황</strong>-<small>{{date}}</small>
+{% endblock %}
+{% block additional_head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/jquery-ui.min.css')}}">
+
+    <style>
+        th, td {
+            text-align: center;
+        }
+    </style>
+
+{% endblock%}
+
+{% block content %}
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-2"></div>
+            <div class="col-10">
+                <div class="form-group">
+                    <label class="control-label mr-2">날짜:</label>
+                    <input type="text" name="dateCustomer" id="datepicker1">
+                    <button class="btn btn-success btn-sm ml-2" id="submit" type="button">검색</button>
+                    {% if rows == [] %}
+                    <button class="btn btn-success btn-sm ml-2" 
+                            onclick="location.href='/covid/update_agender/{{date}}'">데이터 가져오기</button>
+                    {% else %}
+                    <button class="btn btn-success btn-sm ml-2" 
+                            onclick="location.href='/covid/agender/chart/radar?date={{date}}'">연령대별 레이더</button>
+                    {% endif %}
+                    
+                </div>
+            </div>
+            
+        <div class="col-11">
+            <table class="table table-condensed mx-5">
+                <tr>
+                    <th>연령대</th>
+                    <th>확진자</th>
+                    <th>확진자비율</th>
+                    <th>사망자</th>
+                    <th>사망자비율</th>
+                    <th>치명률</th>
+                </tr>
+                {% for row in rows %}
+                    {% if loop.index == 10 %}
+                    <tr>
+                        <th>성별</th><th></th><th></th><th></th><th></th><th></th>
+                    </tr>
+                    {% endif %}
+                <tr>
+                    <td>{{row[0]}}</td>
+                    <td>{{'{:,}'.format(row[1])}}명</td>
+                    <td>{{row[2]}}%</td>
+                    <td>{{'{:,}'.format(row[3])}}명</td>
+                    <td>{{row[4]}}%</td>
+                    <td>{{row[5]}}%</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block additional_body %}
+<script src="{{url_for('static', filename='js/jquery-ui.min.js')}}"></script>
+<script>
+    $.datepicker.setDefaults({
+        dateFormat: 'yy-mm-dd',
+        prevText: '이전 달',
+        nextText: '다음 달',
+        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+        showMonthAfterYear: true,
+        yearSuffix: '년'
+    });
+    $(function() {
+        $("#datepicker1").datepicker();
+    });
+
+    $('#submit').on('click', function(e) {
+        e.preventDefault();
+
+        date = $('#datepicker1').val(); 
+        endpoint = '/covid/agender?date=' + date;
+
+        window.location.href = endpoint
+
+        return false;
+    });
+</script>
+
+    
+
+{% endblock %}

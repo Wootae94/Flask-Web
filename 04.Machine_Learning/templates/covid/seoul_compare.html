@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block additional_head %}
+    <style>
+        /* Make the image fully responsive */
+        td img {
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block subtitle %}
+    코로나-19 서울 자치구별 비교
+{% endblock %}
+{% block content %}
+            <table class='table table-borderless'>
+                <tr>
+                    <td colspan="3">
+                        <img src="{{url_for('static', filename='img/seoul_compare.png', q=mtime)}}"
+                        alt="서울 확진자수 비교 이미지">
+                    </td>
+                </tr >
+                <form action="/covid/seoul_compare" method="POST">
+                    <tr>
+                        {% for subject in ['인구수당누적확진자수','지역별합계'] %} 
+                        <td style="margin-left: 10px;">
+                            <div class="form-check-inline">
+                              <label class="form-check-label" for="check">
+                                <input type="radio" class="form-check-input" id="check" name="subject" value={{subject}} >{{ subject }}
+                              </label>
+                            </div>
+                        </td>
+                        {% endfor %}
+                        <td>
+                            <button type="submit" class="btn btn-primary">선택</button>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+      
+{% endblock %}
+{% block additional_body %}
+
+{% endblock %}

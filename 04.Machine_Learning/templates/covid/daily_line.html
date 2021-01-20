@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block subtitle %}
+<strong>코로나 현황</strong> - <small>{{ subject }} 최근 10일 그래프</small>
+{% endblock %}
+{% block additional_head %}
+
+{% endblock%}
+
+{% block content %}
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-10"></div>
+                <div class="col-2">
+                    <button class="btn btn-primary"
+                                onclick="location.href='/covid/daily'">돌아가기</button>
+                </div>
+        <div class="col-12">
+            <canvas id="myLineChart" width="642" height="321" style="display: block; width: 642px; height: 321px;"></canvas>
+            <table class="table table-borderless">
+                <tr>
+                    <td>
+                        <select class="custom-select custom-select-md" id="region" name="region">
+                            <option value="" disabled selected>지역을 선택하십시오.</option>
+                            {% for region in region_list %}
+                                <option>{{region}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="btn btn-success btn-sm" id="submit" type="button">검색</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block additional_body %}
+
+<script src="{{url_for('static', filename = 'Chart//dist/Chart.min.js')}}""></script>
+<script type=text/javascript>
+    var date_list = {{ data_dict["date"] | tojson | safe }}
+    var defCnt_list = {{ data_dict["defCnt"] | tojson | safe }}
+    var isolClearCnt_list = {{ data_dict["isolClearCnt"] | tojson | safe }}
+    var ctx = document.getElementById("myLineChart").getContext('2d');
+    var myLineChart = new Chart(ctx,{
+        "type":"line",
+        "data":{
+            "labels":date_list,
+            "datasets":[{
+                    "label":"확진자수",
+                    "data":defCnt_list,
+                    "fill":false,
+                    "borderColor":"rgb(75, 192, 192)",
+                    "lineTension":0.2},
+                {
+                    "label":"격리해제자수",
+                    "data":isolClearCnt_list,
+                    "fill":false,
+                    "borderColor":"rgb(192, 75, 192)",
+                    "lineTension":0.2}]},
+        "options":{}});
+</script>
+
+<script>
+    $('#submit').on('click', function(e) {
+        e.preventDefault();
+
+        region = $('#region').val(); 
+        endpoint = '/covid/daily/chart/line?region=' + region;
+
+        window.location.href = endpoint
+
+        return false;
+    });
+</script>
+
+{% endblock %}

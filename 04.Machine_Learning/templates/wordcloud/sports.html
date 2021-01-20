@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block subtitle %}
+    <strong>스포츠 뉴스</strong>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <form action="/wordcloud/sports" method="POST" enctype="multipart/form-data">
+                <table class="table table-borderless">
+                    <tr>
+                        <td><label for="item">항목</label></td>
+                        <td>
+                            <select class="custom-select" id="item" name="item">
+                                {% for item in ['스포츠 전체','야구','해외야구','축구','해외축구', '농구','배구','골프','일반','e스포츠'] %}
+                                    <option value="{{item}}">{{item}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="stop_words">금지어<br>(Stopwords)</label></td>
+                        <td>
+                            <textarea name="stop_words" id="stop_words" cols="50" rows="5"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            <button type="submit" class="btn btn-primary">실행</button>&nbsp;&nbsp;&nbsp;
+                            <button type="reset" class="btn btn-secondary">취소</button>
+                        </td>
+                    </tr>
+                </table>		
+            </form>
+        </div>
+        <div class="col-2"></div>
+    </div>
+{% endblock %}
+{% block additional_body %}
+    <script>
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+{% endblock %}

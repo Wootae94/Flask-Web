@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block additional_head %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<style>
+    
+    th,td {
+        text-align: center;
+    }
+</style>
+{% endblock%}
+{% block subtitle %}
+<strong>YES24 베스트셀러</strong>
+{% endblock %}
+{% block content %}
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-12">
+            <table id="datatable_book" class="display compact" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>index</th><th>책제목</th><th>책표지</th><th>저자</th><th>가격</th><th>소개</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for params in params_list %}
+                    <tr>
+                        <td>{{ params[0] }}</td>
+                        <td>
+                            <a href="{{ params[5] }}">{{ params[1] }}</a>
+                        </td>
+                        <td>
+                            <img src="{{ params[6] }}" alt="책표지"  width="48" height="48">
+                        </td>
+                        <td>
+                            {{ params[2] }}
+                        </td>
+                        <td>
+                            {{ params[3] }}
+                        </td>
+                        <td>
+                            {{ params[4] }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block additional_body %}
+<script>
+    $(document).ready(function() {
+        $('#datatable_book').DataTable({
+            info: false,
+                searching: true,
+                paging: true,
+                ordering: false,
+                //order: [[ 0, "asc" ]],
+                columnDefs: [{
+                    "targets": [ 0 ],
+                    "visible": false,
+                    "searchable": false
+                }],
+            language: {
+              thousands: ',',
+              search: '',
+              searchPlaceholder: "검색어를 입력해 주세요.",
+              paginate: {
+                first: '처음',
+                previous: '이전',
+                next: '다음',
+                last: '마지막',
+              }
+            },
+            oLanguage: {
+              sLengthMenu: "_MENU_",
+            },
+            info: false,
+            order: [[ 1, 'desc' ]],
+            aLengthMenu: [[10, 20, 50, 100], ['10개씩 보기', '20개씩 보기', '50개씩 보기', '100개씩 보기']],
+            pageLength: 10
+          });
+    } );
+</script>
+{% endblock %}

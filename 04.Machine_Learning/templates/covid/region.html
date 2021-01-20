@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block subtitle %}
+    <strong>코로나 현황</strong>
+{% endblock %}
+{% block additional_head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/jquery-ui.min.css')}}">
+<style>
+    th, td {
+        text-align: center;
+    }
+</style>
+{% endblock%}
+{% block content %}
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            
+               <div class="form-group">
+                   <label class="control-label mr-2" for="from">시작날짜:</label>
+                   <input type="text" name="dateCustomer" id="from"  autocomplete="off">&nbsp;
+                   <label class="control-label mr-2" for="to">끝날짜:</label>
+                   <input type="text" name="dateCustomer" id="to"  autocomplete="off">
+                   <button class="btn btn-success btn-sm ml-2" id="submit" type="button">검색</button>
+                    {% if rows == [] %}
+                        <button class="btn btn-success btn-sm ml-2" 
+                                onclick="location.href='/covid/update_region/{{date}}'">데이터 가져오기</button>
+                    {% endif %}
+               </div>
+            
+        </div>
+        <div class="col-1"></div>
+        <div class="col-12">
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th>날짜</th>
+                        <th>제주</th>
+                        <th>경남</th>
+                        <th>경북</th>
+                        <th>전남</th>
+                        <th>전북</th>
+                        <th>충남</th>
+                        <th>충북</th>
+                        <th>강원</th>
+                        <th>경기</th>
+                        <th>세종</th>
+                        <th>울산</th>
+                        <th>대전</th>
+                        <th>광주</th>
+                        <th>인천</th>
+                        <th>대구</th>
+                        <th>부산</th>
+                        <th>서울</th>
+                        <th>합계</th>
+                    </tr>
+                </thead>
+                {% for row in rows%}
+                <tr class="clickable text-center" onclick="location='/covid/region/chart/doughnut?date={{row[0]}}'" style="cursor:pointer">
+                    <td>{{row[0]}}</td>
+                    <td>{{row[3]}}</td>
+                    <td>{{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>{{row[4]}}</td>
+                    <td>{{row[5]}}</td>
+                    <td>{{row[6]}}</td>
+                    <td>{{row[7]}}</td>
+                    <td>{{row[8]}}</td>
+                    <td>{{row[9]}}</td>
+                    <td>{{row[10]}}</td>
+                    <td>{{row[11]}}</td>
+                    <td>{{row[12]}}</td>
+                    <td>{{row[13]}}</td>
+                    <td>{{row[14]}}</td>
+                    <td>{{row[15]}}</td>
+                    <td>{{row[16]}}</td>
+                    <td>{{row[17]}}</td>
+                    <td>{{row[18]}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div> 
+</div>
+
+{% endblock %}
+{% block additional_body %}
+<script src="{{url_for('static', filename='js/jquery-ui.min.js')}}"></script>
+<script>
+    $.datepicker.setDefaults({
+        dateFormat: 'yy-mm-dd',
+        prevText: '이전 달',
+        nextText: '다음 달',
+        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+        showMonthAfterYear: true,
+        yearSuffix: '년'
+    });
+    $(function () {
+        $("#from").datepicker();
+        $("#to").datepicker();
+    });
+</script>
+<script>
+    $('#submit').on('click', function(e) {
+        e.preventDefault();
+
+        startdate = $('#from').val(); 
+        enddate = $('#to').val();
+        endpoint = '/covid/region?date=' + startdate +' '+ enddate;
+
+        window.location.href = endpoint
+
+        return false;
+    });
+</script>
+{% endblock %}

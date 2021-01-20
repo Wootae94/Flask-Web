@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block additional_head %}
+<style>
+    td img {
+        width: 100%;
+    }
+</style>
+{% endblock%}
+{% block subtitle %}
+<strong>식신 {{ region }} 맛집 Top 30</strong>&nbsp;&nbsp;<button class="btn btn-primary btn-sm" onclick="location.href='/crawling/restaurant'">돌아가기</button>
+{% endblock %}
+{% block content %}
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-condensed">
+                <tr>
+                    <td>식당명</td>
+                    <td>이미지</td>
+                    <td>소개</td>
+                    <td>주소</td>
+                </tr>
+                {% for params in params_list %}
+                <tr>
+                    <td>
+                        <a href={{ params[0] }}>{{params[1]}}</a>
+                    </td>
+                    <td>
+                        <img src="{{params[2]}}" alt="">
+                    </td>
+                    <td width=400 style="word-break:break-all">
+                        {{params[3]}}
+                    </td>
+                    <td>
+                        {{params[4]}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block additional_body %}
+
+{% endblock %}

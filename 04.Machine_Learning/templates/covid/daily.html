@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block subtitle %}
+    <strong>코로나 현황</strong>-<small>{{date}}</small>
+{% endblock %}
+{% block additional_head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/jquery-ui.min.css')}}">
+    <style>
+        th, td {
+            text-align: center;
+        }
+    </style>
+{% endblock%}
+{% block content %}
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-3"></div>
+                <div class="col-9">
+                    <div class="form-group">
+                        <label class="control-label mr-2">날짜:</label>
+                        <input type="text" name="dateCustomer" id="datepicker1">
+                        <button class="btn btn-success btn-sm ml-2" id="submit" type="button">검색</button>
+                        {% if rows == [] %}
+                        <button class="btn btn-success btn-sm ml-2" 
+                                onclick="location.href='/covid/update_daily/{{date}}'">데이터 가져오기</button>
+                        {% else %}
+                        <button class="btn btn-success btn-sm ml-2" 
+                            onclick="location.href='/covid/daily/chart/line'">그래프 그리기</button>
+                        {% endif %}
+                    </div>
+                </div>
+        
+        <div class="col-12">
+            <table class="table table-condensed mx-5">
+                <thead>
+                    <tr>
+                        <th>일자</th>
+                        <th>광역시도</th>
+                        <th>사망자</th>
+                        <th>확진자</th>
+                        <th>전일대비</th>
+                        <th>격리해제</th>
+                        <th>격리중</th>
+                        <th>지역발생</th>
+                        <th>해외유입</th>
+                        <th>10만명당</th>
+                    </tr>
+                </thead>
+                {% for row in rows%}
+                <tr>
+                    <td>{{row[0]}}</td>
+                    <td>{{row[3]}}</td>
+                    <td>{{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>{{row[4]}}</td>
+                    <td>{{row[5]}}</td>
+                    <td>{{row[6]}}</td>
+                    <td>{{row[7]}}</td>
+                    <td>{{row[8]}}</td>
+                    <td>{{row[9]}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div> 
+</div>
+
+{% endblock %}
+{% block additional_body %}
+<script src="{{url_for('static', filename='js/jquery-ui.min.js')}}"></script>
+<script>
+    $.datepicker.setDefaults({
+        dateFormat: 'yy-mm-dd',
+        prevText: '이전 달',
+        nextText: '다음 달',
+        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+        showMonthAfterYear: true,
+        yearSuffix: '년'
+    });
+    $(function() {
+        $("#datepicker1").datepicker();
+    });
+
+    $('#submit').on('click', function(e) {
+        e.preventDefault();
+
+        date = $('#datepicker1').val(); 
+        endpoint = '/covid/daily?date=' + date;
+
+        window.location.href = endpoint
+
+        return false;
+    });
+</script>
+{% endblock %}

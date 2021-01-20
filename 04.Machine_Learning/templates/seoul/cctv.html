@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block weather %} {{ weather|safe() }} {% endblock %}
+{% block aditional_head %}
+<style>
+    td {
+        text-align: center;
+    }
+</style>
+{% endblock%}
+{% block subtitle %}
+<strong>
+    <h2>서울시 자치구별 CCTV 비교</h2> CCTV {{subtitle}}
+</strong>
+{% endblock %}
+{% block content %}
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-12">
+            <iframe class="map" , src="/map" width="800" height="600"></iframe>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-8">
+            <table class="table-borderless mb-5">
+                <tr>
+                    <form action="/seoul/cctv" method="GET">
+                        {% for subject in ['소계','최근증가율','1인당비율'] %}
+                        <td style="margin-left: 10px;">
+                            <div class="form-check-inline">
+                                <label class="form-check-label" for="check">
+                                    <input type="radio" class="form-check-input" id="check" name="subject"
+                                        value={{subject}}>{{ subject }}
+                                </label>
+                            </div>
+                        </td>
+                        {% endfor %}
+                        <td>
+                            <button type="submit" class="btn btn-primary btn-sm ml-2">지도선택</button>
+                        </td>
+                    </form>
+                    <td>
+                        <button class="btn btn-success btn-sm ml-2"
+                            onclick="location.href='/seoul/cctv/grape'">그래프보기</button>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+{% endblock %}

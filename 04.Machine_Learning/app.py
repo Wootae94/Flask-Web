@@ -9,8 +9,8 @@ from bp3_carto.carto import carto_bp
 from bp4_crawling.crawling import crawling_bp
 from bp5_wordcloud.wordcloud import word_bp
 from bp6_classifier.classifier import clf_bp
-# from bp7_advance.advance import a_clf_bp
-from bp8_regression.regression import regression_bp
+from bp7_advanced.advanced import a_clf_bp
+from bp8_regression.regression import rgrs_bp
 from bp9_cluster.cluster import cluster_bp
 
 from my_util.weather import get_weather
@@ -23,8 +23,8 @@ app.register_blueprint(carto_bp, url_prefix = '/carto')
 app.register_blueprint(crawling_bp, url_prefix = '/crawling')
 app.register_blueprint(word_bp, url_prefix = '/wordcloud')
 app.register_blueprint(clf_bp, url_prefix = '/clf')
-# app.register_blueprint(a_clf_bp, url_prefix = '/a_clf')
-app.register_blueprint(regression_bp, url_prefix = '/regression')
+app.register_blueprint(a_clf_bp, url_prefix = '/a_clf')
+app.register_blueprint(rgrs_bp, url_prefix = '/reg')
 app.register_blueprint(cluster_bp, url_prefix = '/cluster')
 with open('./logging.json','r') as file:
     config = json.load(file)

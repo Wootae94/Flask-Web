@@ -44,7 +44,7 @@
         {% block weather %}{% endblock %}
     </div>
     </nav>
-    <div class="container p-5 mt-5">
+    <div class="container p-5 mt-5 mb-5">
         <div class="row mt-3">
             <div class="col-2">
                 <ul class="nav flex-column nav-pills">
@@ -123,11 +123,10 @@
                         <div class="dropdown-menu">
                             <a class="dropdown-item disabled" href="#">감성 분석</a>
                             <a class="dropdown-item" href="/a_clf/naver">네이버 영화평</a>
-                            <a class="dropdown-item" href="/a_clf/IMDB">IMDB 영화평</a>
-                            <a class="dropdown-item" href="/a_clf/b_cancer">유방암</a>
-                            <div class="dropdown-divider"></av>
+                            <a class="dropdown-item" href="/a_clf/imdb">IMDB 영화평</a>
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/a_clf/news"> 뉴스그룹 분류</a>
-                            <a class="dropdown-item" href="/a_clf/MNIST">MNIST 손글씨 분류</a>
+                            <a class="dropdown-item" href="/a_clf/digits">MNIST 손글씨 분류</a>
                         </div>
                     </li>
                     <div class="dropdown-divider"></div>
@@ -135,9 +134,10 @@
                         <a class="nav-link dropdown-toggle {% if menu.rg %}active{% endif %}" data-toggle="dropdown"
                         href="#">회귀</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="/regression/diabetes">당뇨병 BMI</a>
-                            <a class="dropdown-item" href="/regression/iris">아이리스 Species</a>
-                            <a class="dropdown-item" href="/regression/stock">주가 예측</a>
+                            <a class="dropdown-item" href="/reg/diabetes">당뇨병 BMI</a>
+                            <a class="dropdown-item" href="/reg/iris">아이리스 Species</a>
+                            <a class="dropdown-item" href="/reg/boston">보스턴 집값</a>
+                            <a class="dropdown-item" href="/reg/stock">주가 예측</a>
                         </div>
                     </li>
                     <div class="dropdown-divider"></div>
@@ -165,7 +165,7 @@
             </div>
         </div>
     </div>
-
+<br><br><br><br><br><br><br><br><br><br>
     <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center fixed-bottom">
         <span class="navbar-text">
             Copyright &copy; 2020 Hoseo Institute of Big Data

@@ -26,7 +26,7 @@ def get_weather_main():
 
 @cluster_bp.route('/cluster', methods=['GET', 'POST'])
 def cluster():
-    menu = menu = {'ho':0, 'da':0, 'ml':1, 'sc':0, 'co':0, 'ca':0, 'cr':0, 'wc':0, 'clf':0, 'a_clf':0, 'rg':0,'cl':1}
+    menu = {'ho':0, 'da':0, 'ml':1, 'sc':0, 'co':0, 'ca':0, 'cr':0, 'wc':0, 'clf':0, 'a_clf':0, 'rg':0,'cl':1}
     if request.method == 'GET':
         return render_template('cluster/cluster.html', menu=menu, weather=get_weather_main())
     else:
